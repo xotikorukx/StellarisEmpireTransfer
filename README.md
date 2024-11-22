@@ -33,6 +33,7 @@ Also, I ran it through copilot in final testing because there was a wierd edge c
 ## Building
 Command line: 🤷
 - It's "cross platform" (in theory, like, it might build, but might not run due to the `Environment.SpecialFolder` line), so the `dotnet` command line should work on poweshell or linux. I haven't tried it though.
+
 Visual Studio
 - At the top, hit "build" then "build solution".
 
