@@ -1,8 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Net.Sockets;
-using System.Text.Json;
-using System.Threading.Tasks;
+﻿using System.Net.Sockets;
 using System.Configuration;
 using CustomEmpireManager = EmpireManager.EmpireManager;
 
