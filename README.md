@@ -1,4 +1,6 @@
 # StellarisEmpireTransfer
+Share your hand-made custom empires with your squad!
+
 ## Overview
 This is a little C# shitscript I build to allow you to share empires with your friends. It uses the Server to Client model on TCP, meaning a PC needs to be running the server.
 
