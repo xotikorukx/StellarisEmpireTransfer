@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "StellarisEmpireTransferClient\Client.csproj", "{64A62E10-17BC-4FAB-972D-2EB6D4231847}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StellarisEmpireTransfer.Client", "StellarisEmpireTransfer.Client\StellarisEmpireTransfer.Client.csproj", "{7308085C-4A63-4CCE-B21A-09C33C028BE8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csproj", "{EFCDA0C0-B8F5-4754-B04D-792941C15CDE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StellarisEmpireTransfer.Core", "StellarisEmpireTransfer.Core\StellarisEmpireTransfer.Core.csproj", "{5DE8ADC5-A143-4876-9C5D-0B1E3F099064}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmpireManager", "EmpireManager\EmpireManager.csproj", "{80BD241A-C164-43C7-A005-A8754A306809}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StellarisEmpireTransfer.Server", "StellarisEmpireTransfer.Server\StellarisEmpireTransfer.Server.csproj", "{F3B3F304-5B62-4DB3-AF27-E3B46E7D58CB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XNetTools", "XNetTools\XNetTools.csproj", "{5D5A6A9A-A2B7-452B-8AC2-8596BD9BBEEA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,23 +17,27 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{64A62E10-17BC-4FAB-972D-2EB6D4231847}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{64A62E10-17BC-4FAB-972D-2EB6D4231847}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{64A62E10-17BC-4FAB-972D-2EB6D4231847}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{64A62E10-17BC-4FAB-972D-2EB6D4231847}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EFCDA0C0-B8F5-4754-B04D-792941C15CDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EFCDA0C0-B8F5-4754-B04D-792941C15CDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EFCDA0C0-B8F5-4754-B04D-792941C15CDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EFCDA0C0-B8F5-4754-B04D-792941C15CDE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{80BD241A-C164-43C7-A005-A8754A306809}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{80BD241A-C164-43C7-A005-A8754A306809}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{80BD241A-C164-43C7-A005-A8754A306809}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{80BD241A-C164-43C7-A005-A8754A306809}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7308085C-4A63-4CCE-B21A-09C33C028BE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7308085C-4A63-4CCE-B21A-09C33C028BE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7308085C-4A63-4CCE-B21A-09C33C028BE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7308085C-4A63-4CCE-B21A-09C33C028BE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5DE8ADC5-A143-4876-9C5D-0B1E3F099064}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DE8ADC5-A143-4876-9C5D-0B1E3F099064}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DE8ADC5-A143-4876-9C5D-0B1E3F099064}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DE8ADC5-A143-4876-9C5D-0B1E3F099064}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3B3F304-5B62-4DB3-AF27-E3B46E7D58CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3B3F304-5B62-4DB3-AF27-E3B46E7D58CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3B3F304-5B62-4DB3-AF27-E3B46E7D58CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3B3F304-5B62-4DB3-AF27-E3B46E7D58CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D5A6A9A-A2B7-452B-8AC2-8596BD9BBEEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D5A6A9A-A2B7-452B-8AC2-8596BD9BBEEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D5A6A9A-A2B7-452B-8AC2-8596BD9BBEEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D5A6A9A-A2B7-452B-8AC2-8596BD9BBEEA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {E93BE92A-B89C-4A41-B150-F6A3970090DC}
+		SolutionGuid = {DE8E8D39-0F11-4249-BE06-C5BBBE4F291F}
 	EndGlobalSection
 EndGlobal

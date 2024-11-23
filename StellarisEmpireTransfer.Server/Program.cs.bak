@@ -1,0 +1,121 @@
+﻿using StellarisEmpireTransfer.Core;
+using XNetTools_Server;
+using XNetTools_Client;
+using System.Drawing;
+using Console = Colorful.Console;
+
+namespace StellarisEmpireTransfer.Server
+{
+    internal class ProgramOld
+    {
+        static EmpireManager empireManager;
+        static WTcpServer tcpServer;
+        static void Main(string[] args)
+        {
+            empireManager = new EmpireManager(true);
+
+            tcpServer = new WTcpServer(35742);
+
+            tcpServer.ClientConnected += OnClientConnected;
+            tcpServer.ClientDisconnected += OnClientDisconnected;
+
+            Console.WriteLine($"Now accepting connections.", Color.DeepSkyBlue);
+
+            InitializeUPNP();
+
+            while (true) ;
+        }
+
+        private static async void InitializeUPNP()
+        {
+            //attempt to maintain a port punch
+            XNetTools_Client.WTcpClient portPunchClient = new XNetTools_Client.WTcpClient(["nfo.darkfeather.net", "homehosted.darkfeather.net"], 35742);
+            bool didConnect = await portPunchClient.Connect();
+
+            if (!didConnect)
+            {
+                Console.WriteLine("FAILED to start UPNP! Try port forwarding if you haven't already", Color.Red); //Bork lol
+                return;
+            }
+
+            Console.WriteLine("PortPunch Connected");
+
+            while (portPunchClient.PublicIP is null) ;
+
+            Console.WriteLine("Passed PunchThrough PIP");
+
+            portPunchClient.Disconnect();
+
+
+            // Generate ShareCode
+            XNetTools_Client.WTcpClient shareCodeClient = new XNetTools_Client.WTcpClient(["nfo.darkfeather.net", "homehosted.darkfeather.net"], 61247);
+            didConnect = await shareCodeClient.Connect();
+
+            if (!didConnect)
+            {
+                Console.WriteLine("FAILED to get your share code!", Color.Red);
+                return;
+            }
+
+            Console.WriteLine("GMSC Connected");
+
+            while (shareCodeClient.PublicIP is null) ;
+
+            Console.WriteLine("Passed ShareCode PIP");
+
+            shareCodeClient.Disconnect();
+
+            Console.Write($"Share this code with your friends!: ");
+            Console.Write($"{IPConverter.IP2Code(shareCodeClient.PublicIP)}\n", Color.LimeGreen);
+        }
+
+
+        private static void OnClientDisconnected(object sender, WClientDisconnectedEventArgs e)
+        {
+            Console.WriteLine($"[{e.Client.serverId}] Disconnected.", Color.DimGray);
+        }
+
+        private static void OnClientConnected(object sender, WClientConnectedEventArgs e)
+        {
+            e.Client.PacketRecieved += OnClientPacketRecieved;
+            Console.WriteLine($"[{e.Client.serverId}] Connected.", Color.LawnGreen);
+        }
+
+        private static void OnClientPacketRecieved(object sender, XNetTools_Server.WClientMessageEventArgs e)
+        {
+            XNetTools_Server.WTcpClient client = e.Client;
+
+            switch (e.MessageId)
+            {
+                case 10000: //RequestAllEmpires
+                    Console.WriteLine($"[{client.serverId}] RequestingAllEmpires.", Color.DarkCyan);
+
+                    string toSend = empireManager.ReadFile();
+
+                    MemoryStream ms = new MemoryStream();
+                    BinaryWriter bw = new BinaryWriter(ms);
+
+                    bw.Write(toSend);
+
+                    client.SendMessage(20000, 0, ms.ToArray());
+                    break;
+
+                case 10001: //UploadEmpire
+                    string incomingEmpireData = e.Reader.ReadString();
+                    string incomingEmpireName = empireManager.GetAllEmpireNames(incomingEmpireData).ElementAt(0);
+                    Console.WriteLine($"[{e.Client.serverId}] Uploading Empire `{incomingEmpireName}`.", Color.DarkCyan);
+                    string existingEmpireData = empireManager.ReadFile();
+
+                    string newEmpireData = empireManager.UpdateEmpire(incomingEmpireName, incomingEmpireData, existingEmpireData);
+                    empireManager.WriteFile(newEmpireData);
+                    break;
+
+                case 10002: //DeleteEmpire
+                    string empireName = e.Reader.ReadString();
+                    Console.WriteLine($"[{e.Client.serverId}] Deleting Empire `{empireName}`.", Color.DarkCyan);
+                    empireManager.WriteFile(empireManager.DeleteEmpire(empireName, empireManager.ReadFile()));
+                    break;
+            }
+        }
+    }
+}

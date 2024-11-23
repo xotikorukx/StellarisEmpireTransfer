@@ -1,9 +1,12 @@
-﻿using System.Net.Sockets;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Sockets;
 using System.Text;
-using System.Text.Json;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
-namespace EmpireManager
+namespace StellarisEmpireTransfer.Core
 {
     public class EmpireManager
     {
@@ -28,7 +31,8 @@ namespace EmpireManager
                 {
                     File.Create(empirePath);
                 }
-            } else
+            }
+            else
             {
                 string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
                 empirePath = $"{documentsPath}\\Paradox Interactive\\Stellaris\\user_empire_designs_v3.4.txt";
@@ -41,7 +45,7 @@ namespace EmpireManager
             StreamReader empiresFile;
             empiresFile = File.OpenText(empirePath);
 
-            string fileData =  empiresFile.ReadToEnd();
+            string fileData = empiresFile.ReadToEnd();
             empiresFile.Close();
 
             isReading = false;
@@ -91,7 +95,9 @@ namespace EmpireManager
                 {
                     Console.WriteLine($" - Empire exists; overwriting");
                     fileString = $"{fileString}\n{updatedEmpireData}";
-                } else { //If the empire is one we aren't touching
+                }
+                else
+                { //If the empire is one we aren't touching
                     string iEmpireData = GetEmpireData(iEmpireName, existingEmpireData);
                     fileString = $"{fileString}\n{iEmpireData}";
                 }
@@ -153,7 +159,8 @@ namespace EmpireManager
                     if (firstAppend || depth > 0)
                     {
                         firstAppend = false;
-                    } else
+                    }
+                    else
                     {
                         return thisEmpireData;//.Replace("\t", "\n");
                     }
@@ -163,7 +170,8 @@ namespace EmpireManager
             throw new Exception("Could not find matching empire.");
         }
 
-        public List<string> GetAllEmpireNames(string empireData) {
+        public List<string> GetAllEmpireNames(string empireData)
+        {
             StreamReader empiresFile = new StreamReader(GenerateStreamFromString(empireData));
 
             List<string> empireNames = new List<string>();
@@ -206,71 +214,6 @@ namespace EmpireManager
             writer.Flush();
             stream.Position = 0; // Reset the stream position to the beginning
             return stream;
-        }
-
-        public static string DeserializeString(byte[] input)
-        {
-            string decode = Encoding.UTF8.GetString(input);
-            //string json = JsonSerializer.Deserialize<string>(decode);
-            return decode;//json;
-        }
-
-        public static byte[] SerializeString(string input)
-        {
-            //string json = JsonSerializer.Serialize<string>(input);
-            byte[] encode = Encoding.UTF8.GetBytes(input);//json);
-            return encode;
-        }
-
-        public void SendPacket(TcpClient connector, uint MessageID, byte[] data)
-        {
-            NetworkStream stream = connector.GetStream();
-            BinaryWriter bw = new BinaryWriter(stream);
-
-            bw.Write(MessageID);
-            bw.Write((ulong)data.Length);
-
-            List<byte[]> split = SplitByteArray(data, 128);
-
-            foreach (var ba in split)
-            {
-                bw.Write(ba);
-            }
-        }
-
-        public async Task<Tuple<uint, byte[]>> ReceivePacket(TcpClient connector)
-        {
-            NetworkStream stream = connector.GetStream();
-            BinaryReader br = new BinaryReader(stream);
-            uint MessageId = br.ReadUInt32();
-            ulong PayloadLength = br.ReadUInt64();
-
-            ulong totalRead = 0;
-
-            byte[] Message = new byte[PayloadLength];
-
-            while (totalRead < PayloadLength)
-            {
-                int moreRead = await stream.ReadAsync(Message, (int)totalRead, (int)(PayloadLength - totalRead));
-                totalRead += (ulong)moreRead;
-            }
-
-            return new Tuple<uint, byte[]> ( MessageId, Message );
-        }
-
-        public static List<byte[]> SplitByteArray(byte[] byteArray, int chunkSize)
-        {
-            List<byte[]> chunks = new List<byte[]>();
-
-            for (int i = 0; i < byteArray.Length; i += chunkSize)
-            {
-                int currentChunkSize = Math.Min(chunkSize, byteArray.Length - i);
-                byte[] chunk = new byte[currentChunkSize];
-                Array.Copy(byteArray, i, chunk, 0, currentChunkSize);
-                chunks.Add(chunk);
-            }
-
-            return chunks;
         }
     }
 }

@@ -8,11 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.0" />
+    <PackageReference Include="Colorful.Console" Version="1.2.15" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EmpireManager\EmpireManager.csproj" />
+    <ProjectReference Include="..\..\XNetToolsV2\XNetTools\XNetTools.csproj" />
+    <ProjectReference Include="..\StellarisEmpireTransfer.Core\StellarisEmpireTransfer.Core.csproj" />
   </ItemGroup>
 
 </Project>
